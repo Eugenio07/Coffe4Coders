@@ -20,14 +20,14 @@ import com.wao.coffe4coders.ui.theme.Coffe4CodersTheme
 import com.wao.coffe4coders.ui.theme.PlatziBlue
 import com.wao.coffe4coders.ui.theme.PlatziGreen
 
-enum class CountryISO(val iso: String){
+enum class CountryISO(val iso: String) {
     COL("COL"),
     BRA("BRA"),
     CRI("CRI"),
     NIC("NIC");
 
-    fun getBackgroundImage(): Int{
-        return when(this){
+    fun getBackgroundImage(): Int {
+        return when (this) {
             COL -> R.drawable.co
             BRA -> R.drawable.br
             CRI -> R.drawable.ri
@@ -35,8 +35,8 @@ enum class CountryISO(val iso: String){
         }
     }
 
-    fun getCountryFlag(): Int{
-        return when(this){
+    fun getCountryFlag(): Int {
+        return when (this) {
             COL -> R.drawable.flagco
             BRA -> R.drawable.flagbr
             CRI -> R.drawable.flagri
@@ -45,25 +45,40 @@ enum class CountryISO(val iso: String){
     }
 
     fun getSurface(): Color {
-        return when(this){
+        return when (this) {
             COL, NIC -> PlatziBlue
             BRA, CRI -> PlatziGreen
         }
     }
 }
 
+typealias SelectionAction = () -> Unit
+
 @Composable
-fun ProductCard(name: String, summary: String, price: Double, currency: String, countryISO: CountryISO) {
+fun ProductCard(
+    name: String,
+    summary: String,
+    price: Double,
+    currency: String,
+    countryISO: CountryISO,
+    selected: SelectionAction
+) {
     Card(modifier = Modifier
         .fillMaxWidth()
         .padding(16.dp)
-        .clickable { }
+        .clickable { selected() }
         .size(480.dp),
         elevation = 10.dp,
         shape = MaterialTheme.shapes.small
     ) {
-        Image(painter = painterResource(id = countryISO.getBackgroundImage()), contentDescription = null)
-        Surface(modifier = Modifier.fillMaxWidth(), color = countryISO.getSurface().copy(alpha = 0.2f)) {
+        Image(
+            painter = painterResource(id = countryISO.getBackgroundImage()),
+            contentDescription = null
+        )
+        Surface(
+            modifier = Modifier.fillMaxWidth(),
+            color = countryISO.getSurface().copy(alpha = 0.2f)
+        ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.padding(16.dp)
@@ -80,10 +95,12 @@ fun ProductCard(name: String, summary: String, price: Double, currency: String, 
                             contentDescription = null,
                             modifier = Modifier.size(32.dp)
                         )
-                        Text(text = "$ $price $currency", modifier = Modifier.fillMaxWidth(),
-                        textAlign = TextAlign.End, style = MaterialTheme.typography.h4)
+                        Text(
+                            text = "$ $price $currency", modifier = Modifier.fillMaxWidth(),
+                            textAlign = TextAlign.End, style = MaterialTheme.typography.h4
+                        )
                     }
-                    
+
                 }
 
             }
@@ -96,9 +113,10 @@ fun ProductCard(name: String, summary: String, price: Double, currency: String, 
 @Preview(showBackground = true)
 @Composable
 fun ProductCardPreview() {
-    Coffe4CodersTheme{
-        ProductCard("Café de Colombia", "Café de origen de las montañas", 35.0, "USD",
+    Coffe4CodersTheme {
+        ProductCard(
+            "Café de Colombia", "Café de origen de las montañas", 35.0, "USD",
             CountryISO.BRA
-        )
+        ) {}
     }
 }

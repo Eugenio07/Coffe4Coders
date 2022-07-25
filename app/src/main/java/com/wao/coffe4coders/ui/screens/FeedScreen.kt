@@ -11,6 +11,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.wao.coffe4coders.ui.components.BodyText
 import com.wao.coffe4coders.ui.components.CountryISO
 import com.wao.coffe4coders.ui.components.ProductCard
@@ -18,7 +20,7 @@ import com.wao.coffe4coders.ui.components.TitleText
 import com.wao.coffe4coders.ui.theme.Coffe4CodersTheme
 
 @Composable
-fun FeedScreen() {
+fun FeedScreen(navController: NavController) {
     val list = listOf<CountryISO>(CountryISO.COL, CountryISO.BRA, CountryISO.CRI, CountryISO.NIC)
     Coffe4CodersTheme() {
         Surface(color = MaterialTheme.colors.background) {
@@ -29,14 +31,18 @@ fun FeedScreen() {
                         BodyText(body = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras tempor posuere risus sed cursus. Aenean eget massa non urna sollicitudin cursus vel semper felis. Ut aliquam sodales elit et tempor. Etiam lobortis odio quam, eget pretium odio scelerisque id. Morbi a euismod est. Praesent porttitor diam at sapien posuere varius. Cras nec pulvinar arcu. Donec eget imperdiet nunc.")
                     }
                 }
-                items(list){country ->
+                items(list) { country ->
                     ProductCard(
                         name = "Café Colombia",
                         summary = "Café de las montañas",
                         price = 50.0,
                         currency = "USD",
                         countryISO = country
-                    )
+                    ) {
+                        navController.navigate("detail") {
+                            launchSingleTop = true
+                        }
+                    }
                 }
             }
         }
@@ -47,5 +53,6 @@ fun FeedScreen() {
 @Preview(showBackground = true)
 @Composable
 fun FeedScreenPreview() {
-    FeedScreen()
+    val navController = rememberNavController()
+    FeedScreen(navController)
 }
