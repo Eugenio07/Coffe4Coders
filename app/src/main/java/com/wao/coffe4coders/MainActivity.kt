@@ -18,6 +18,7 @@ import com.wao.coffe4coders.ui.screens.CheckoutScreen
 import com.wao.coffe4coders.ui.screens.DetailScreen
 import com.wao.coffe4coders.ui.screens.FeedScreen
 import com.wao.coffe4coders.ui.theme.Coffe4CodersTheme
+import com.wao.coffe4coders.utils.MockDataProvider
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,15 +38,15 @@ fun NavigationHost(){
                 composable(route = "feed"){
                     FeedScreen(navController)
                 }
-                composable(route = "detail/{countryIso}"){ backStackEntry ->
-                    val countryIsoString = backStackEntry.arguments?.getString("countryIso") ?: "COL"
-                    val countryIso = CountryISO.valueOf(countryIsoString)
-                    DetailScreen(navController, countryIso)
+                composable(route = "detail/{productID}"){ backStackEntry ->
+                    val productIDString = backStackEntry.arguments?.getString("productID") ?: "0"
+                    val product = MockDataProvider.getProductById(productIDString.toInt())!!
+                    DetailScreen(navController, product)
                 }
-                composable(route = "checkout/{countryIso}"){ backStackEntry ->
-                    val countryIsoString = backStackEntry.arguments?.getString("countryIso") ?: "COL"
-                    val countryIso = CountryISO.valueOf(countryIsoString)
-                    CheckoutScreen(navController, countryIso)
+                composable(route = "checkout/{productID}"){ backStackEntry ->
+                    val productIDString = backStackEntry.arguments?.getString("productID") ?: "0"
+                    val product = MockDataProvider.getProductById(productIDString.toInt())!!
+                    CheckoutScreen(navController, product)
                 }
             }
 

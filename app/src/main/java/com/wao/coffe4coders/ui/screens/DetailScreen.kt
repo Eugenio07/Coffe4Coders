@@ -18,11 +18,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.wao.coffe4coders.models.Product
 import com.wao.coffe4coders.ui.components.*
 import com.wao.coffe4coders.ui.theme.Coffe4CodersTheme
+import com.wao.coffe4coders.utils.MockDataProvider
 
 @Composable
-fun DetailScreen(navController: NavController, countryISO: CountryISO) {
+fun DetailScreen(navController: NavController, product: Product) {
     Scaffold(
         topBar = {
             CustomAppBar(navigationIcon = Icons.Filled.ArrowBack) {
@@ -41,29 +43,29 @@ fun DetailScreen(navController: NavController, countryISO: CountryISO) {
                         .height(400.dp)
                 ) {
                     Image(
-                        painter = painterResource(id = countryISO.getBackgroundImage()),
+                        painter = painterResource(id = CountryISO.valueOf(product.countryIso).getBackgroundImage()),
                         contentDescription = null,
                         contentScale = ContentScale.Crop,
                         modifier = Modifier.fillMaxSize()
                     )
                 }
                 Column(modifier = Modifier.padding(16.dp)) {
-                    TitleText(title = "Café de Colombia")
+                    TitleText(title = product.name)
                     Text(
-                        text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras tempor posuere risus sed cursus. Aenean eget massa non urna sollicitudin cursus vel semper felis. Ut aliquam sodales elit et tempor.",
+                        text = product.summary,
                         style = MaterialTheme.typography.caption
                     )
                     Spacer(modifier = Modifier.height(24.dp))
-                    BodyText(body = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras tempor posuere risus sed cursus. Aenean eget massa non urna sollicitudin cursus vel semper felis. Ut aliquam sodales elit et tempor. Etiam lobortis odio quam, eget pretium odio scelerisque id. Morbi a euismod est. Praesent porttitor diam at sapien posuere varius. Cras nec pulvinar arcu. Donec eget imperdiet nunc.")
+                    BodyText(body = product.description)
                     Spacer(modifier = Modifier.height(24.dp))
                     Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
                         Text(
-                            text = "$35.0 USD",
+                            text = "$ ${product.price} ${product.currency}",
                             style = MaterialTheme.typography.h5,
                             textAlign = TextAlign.End
                         )
                         CustomButton(label = "Continuar") {
-                            navController.navigate("checkout/${countryISO.iso}"){
+                            navController.navigate("checkout/${product.id}"){
                                 launchSingleTop = true
                             }
                         }
@@ -79,6 +81,6 @@ fun DetailScreen(navController: NavController, countryISO: CountryISO) {
 @Composable
 fun DetailScreenPreview() {
     Coffe4CodersTheme() {
-        DetailScreen(rememberNavController(), CountryISO.COL)
+        DetailScreen(rememberNavController(), MockDataProvider.getProductById(0)!!)
     }
 }

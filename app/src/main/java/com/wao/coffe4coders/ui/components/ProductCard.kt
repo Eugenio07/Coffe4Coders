@@ -16,9 +16,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.wao.coffe4coders.R
+import com.wao.coffe4coders.models.Product
 import com.wao.coffe4coders.ui.theme.Coffe4CodersTheme
 import com.wao.coffe4coders.ui.theme.PlatziBlue
 import com.wao.coffe4coders.ui.theme.PlatziGreen
+import com.wao.coffe4coders.utils.MockDataProvider
 
 enum class CountryISO(val iso: String) {
     COL("COL"),
@@ -56,13 +58,10 @@ typealias SelectionAction = () -> Unit
 
 @Composable
 fun ProductCard(
-    name: String,
-    summary: String,
-    price: Double,
-    currency: String,
-    countryISO: CountryISO,
+    product: Product,
     selected: SelectionAction
 ) {
+    val countryISO = CountryISO.valueOf(product.countryIso) ?: CountryISO.COL
     Card(modifier = Modifier
         .fillMaxWidth()
         .padding(16.dp)
@@ -83,8 +82,8 @@ fun ProductCard(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.padding(16.dp)
             ) {
-                Text(text = name, style = MaterialTheme.typography.h4)
-                Text(text = summary, style = MaterialTheme.typography.body1)
+                Text(text = product.name, style = MaterialTheme.typography.h4)
+                Text(text = product.summary, style = MaterialTheme.typography.body1)
                 Column(
                     modifier = Modifier.fillMaxSize(),
                     verticalArrangement = Arrangement.Bottom
@@ -96,8 +95,10 @@ fun ProductCard(
                             modifier = Modifier.size(32.dp)
                         )
                         Text(
-                            text = "$ $price $currency", modifier = Modifier.fillMaxWidth(),
-                            textAlign = TextAlign.End, style = MaterialTheme.typography.h4
+                            text = "$ ${product.price} ${product.currency}",
+                            modifier = Modifier.fillMaxWidth(),
+                            textAlign = TextAlign.End,
+                            style = MaterialTheme.typography.h4
                         )
                     }
 
@@ -115,8 +116,7 @@ fun ProductCard(
 fun ProductCardPreview() {
     Coffe4CodersTheme {
         ProductCard(
-            "Café de Colombia", "Café de origen de las montañas", 35.0, "USD",
-            CountryISO.BRA
+            MockDataProvider.getProductById(0)!!
         ) {}
     }
 }
