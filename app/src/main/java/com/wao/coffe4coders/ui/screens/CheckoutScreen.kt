@@ -28,6 +28,7 @@ fun CheckoutScreen(navController: NavController, product: Product) {
     var phone by remember { mutableStateOf("") }
     var address by remember { mutableStateOf("") }
     var city by remember { mutableStateOf("") }
+    var message by remember { mutableStateOf<String?>(null) }
 
 //    var name by remember {
 //        mutableStateOf("")
@@ -41,6 +42,12 @@ fun CheckoutScreen(navController: NavController, product: Product) {
             navController.navigate("detail/$product")
         }
     }, content = {
+        Alert(title = "Felicidades", message = message) {
+            navController.navigate("feed"){
+                launchSingleTop = true
+                popUpTo("feed")
+            }
+        }
         Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
             ProductCard(
                 MockDataProvider.getProductById(product.id)!!
@@ -95,7 +102,8 @@ fun CheckoutScreen(navController: NavController, product: Product) {
                         textAlign = TextAlign.Start
                     )
                     CustomButton(label = "Finalizar pedidio") {
-
+                    //TODO: validar los campos
+                        message = "Tu pedido ha sido creado"
                     }
                 }
             }

@@ -29,16 +29,20 @@ private val LightColorPalette = lightColors(
 
 @Composable
 fun Coffe4CodersTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
-    val colors = LightColorPalette
-/*        if (darkTheme) {
+    val colors = if (darkTheme) {
         DarkColorPalette
     } else {
         LightColorPalette
-    }*/
+    }
+    val type = if (darkTheme) {
+        TypographyDark
+    } else {
+        Typography
+    }
 
     MaterialTheme(
         colors = colors,
-        typography = Typography,
+        typography = type,
         shapes = Shapes,
         content = content
     )
